@@ -1,0 +1,123 @@
+---
+import { Icon } from 'astro-icon/components';
+import { proyectos } from '../data/proyectos/index.ts';
+---
+
+{proyectos.length === 0 ? (
+  <p class="text-center text-on-surface-variant py-8">No hi ha projectes per mostrar.</p>
+) : (
+  <section
+    class="embla relative w-full"
+    aria-roledescription="carousel"
+    aria-label="Projectes"
+    data-carrusel
+    tabindex="0"
+  >
+    <div class="embla__viewport overflow-hidden">
+      <div class="embla__container flex">
+        {proyectos.map((p, i) => (
+          <article
+            class="embla__slide relative flex-[0_0_100%] min-w-0"
+            aria-roledescription="slide"
+            aria-label={p.title}
+            data-proyecto-title={p.title}
+          >
+            <img
+              src={p.images[0]}
+              alt={p.title}
+              class="embla__slide__img w-full object-cover rounded-default"
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+            <button
+              type="button"
+              class="embla__zoom absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
+              aria-label={`Veure totes les imatges de ${p.title}`}
+              data-zoom-trigger
+            >
+              <Icon name="material-symbols:search" class="w-6 h-6" aria-hidden="true" />
+            </button>
+          </article>
+        ))}
+      </div>
+    </div>
+    <button
+      type="button"
+      class="embla__btn embla__btn--prev flex absolute left-2 top-1/2 -translate-y-1/2 items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
+      aria-label="Projecte anterior"
+    >
+      <span aria-hidden="true">←</span>
+    </button>
+    <button
+      type="button"
+      class="embla__btn embla__btn--next flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
+      aria-label="Projecte següent"
+    >
+      <span aria-hidden="true">→</span>
+    </button>
+  </section>
+)}
+
+<script>
+  import EmblaCarousel from 'embla-carousel';
+  import type { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
+
+  function shuffleSlides(container: HTMLElement): void {
+    const slides = Array.from(container.children) as HTMLElement[];
+    for (let i = slides.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [slides[i], slides[j]] = [slides[j], slides[i]];
+    }
+    slides.forEach((slide) => container.appendChild(slide));
+  }
+
+  function init(): void {
+    const root = document.querySelector<HTMLElement>('[data-carrusel]');
+    if (!root) return;
+
+    const container = root.querySelector<HTMLElement>('.embla__container');
+    if (container) shuffleSlides(container);
+
+    const mq = window.matchMedia('(min-width: 768px)');
+    const baseOptions: EmblaOptionsType = {
+      container: '.embla__container',
+      slides: '.embla__slide',
+      loop: true,
+      align: 'start',
+    };
+    let embla: EmblaCarouselType | null = EmblaCarousel(root, {
+      ...baseOptions,
+      watchDrag: !mq.matches,
+    });
+
+    const prev = root.querySelector<HTMLButtonElement>('.embla__btn--prev');
+    const next = root.querySelector<HTMLButtonElement>('.embla__btn--next');
+
+    prev?.addEventListener('click', () => embla?.scrollPrev());
+    next?.addEventListener('click', () => embla?.scrollNext());
+
+    root.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        embla?.scrollPrev();
+      } else if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        embla?.scrollNext();
+      }
+    });
+
+    const onMqChange = (): void => {
+      embla?.destroy();
+      embla = EmblaCarousel(root, {
+        ...baseOptions,
+        watchDrag: !mq.matches,
+      });
+    };
+    mq.addEventListener('change', onMqChange);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>

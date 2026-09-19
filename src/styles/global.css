@@ -55,7 +55,7 @@
 
   /* Typography */
   --font-headline: "Noto Serif Variable", serif;
-  --font-body: "Manrope Variable", sans-serif;
+  --font-body: "Helvetica", sans-serif;
   --font-label: "Manrope Variable", sans-serif;
 
   /* Border Radius */
@@ -72,6 +72,14 @@ html {
 
 body {
   font-family: var(--font-body);
+  color: rgba(0, 0, 0, .5);
+}
+
+
+/* Glassmorphism utility */
+.glass-nav {
+  background-color: rgba(251, 249, 248, 0.8);
+  backdrop-filter: blur(20px);
 }
 
 h1,
@@ -81,8 +89,14 @@ h3,
   font-family: var(--font-headline);
 }
 
-/* Glassmorphism utility */
-.glass-nav {
-  background-color: rgba(251, 249, 248, 0.8);
-  backdrop-filter: blur(20px);
+/* Paper texture background — covers the entire viewport */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/textures/paper.svg');
+  background-repeat: repeat;
+  background-size: 512px auto;
+  z-index: -1;
+  pointer-events: none;
 }

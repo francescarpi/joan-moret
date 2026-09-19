@@ -1,0 +1,143 @@
+---
+import { Icon } from 'astro-icon/components';
+import { proyectos } from '../data/proyectos/index.ts';
+---
+
+<div
+  id="projecte-lightbox"
+  class="projecte-lightbox fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-sm"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Visor d'imatges del projecte"
+  data-lightbox
+>
+  <button
+    type="button"
+    id="projecte-lightbox-close"
+    class="absolute top-4 right-4 z-10 flex items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
+    aria-label="Tancar visor"
+  >
+    <span aria-hidden="true" class="text-2xl leading-none">×</span>
+  </button>
+
+  <div class="projecte-lightbox__inner h-full w-full flex items-center justify-center px-4">
+    <div class="embla w-full max-w-7xl relative">
+      <div class="embla__viewport overflow-hidden">
+        <div class="embla__container flex" data-lightbox-container>
+          <!-- slides injected dynamically -->
+        </div>
+      </div>
+      <button
+        type="button"
+        class="embla__btn embla__btn--prev absolute left-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
+        aria-label="Imatge anterior"
+        data-lightbox-prev
+      >
+        <span aria-hidden="true">←</span>
+      </button>
+      <button
+        type="button"
+        class="embla__btn embla__btn--next absolute right-2 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
+        aria-label="Imatge següent"
+        data-lightbox-next
+      >
+        <span aria-hidden="true">→</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import EmblaCarousel from 'embla-carousel';
+  import type { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel';
+  import { proyectos } from '../data/proyectos/index.ts';
+
+  let lightboxEmbla: EmblaCarouselType | null = null;
+
+  function getLightbox(): HTMLElement | null {
+    return document.getElementById('projecte-lightbox');
+  }
+
+  function openLightbox(title: string): void {
+    const root = getLightbox();
+    if (!root) return;
+    const container = root.querySelector<HTMLElement>('[data-lightbox-container]');
+    if (!container) return;
+    const proyecto = proyectos.find((p) => p.title === title);
+    if (!proyecto) return;
+
+    container.innerHTML = proyecto.images
+      .map(
+        (img, i) => `
+        <div class="embla__slide flex-[0_0_100%] min-w-0 flex items-center justify-center px-2">
+          <img src="${img}" alt="${proyecto.title} — imatge ${i + 1}" class="max-h-[85vh] max-w-full object-contain" />
+        </div>`
+      )
+      .join('');
+
+    root.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    lightboxEmbla?.destroy();
+    const emblaRoot = root.querySelector<HTMLElement>('.embla');
+    if (!emblaRoot) return;
+    const options: EmblaOptionsType = {
+      container: '.embla__container',
+      slides: '.embla__slide',
+      loop: true,
+      align: 'start',
+    };
+    lightboxEmbla = EmblaCarousel(emblaRoot, options);
+
+    const hasMultiple = proyecto.images.length > 1;
+    root.querySelector<HTMLButtonElement>('[data-lightbox-prev]')?.classList.toggle('hidden', !hasMultiple);
+    root.querySelector<HTMLButtonElement>('[data-lightbox-next]')?.classList.toggle('hidden', !hasMultiple);
+  }
+
+  function closeLightbox(): void {
+    const root = getLightbox();
+    if (!root) return;
+    root.classList.add('hidden');
+    document.body.style.overflow = '';
+    lightboxEmbla?.destroy();
+    lightboxEmbla = null;
+  }
+
+  function init(): void {
+    document.querySelectorAll<HTMLButtonElement>('[data-zoom-trigger]').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const slide = btn.closest<HTMLElement>('[data-proyecto-title]');
+        if (!slide) return;
+        const title = slide.dataset.proyectoTitle;
+        if (!title) return;
+        openLightbox(title);
+      });
+    });
+
+    document.getElementById('projecte-lightbox-close')?.addEventListener('click', closeLightbox);
+
+    document.querySelector<HTMLButtonElement>('[data-lightbox-prev]')?.addEventListener('click', () => lightboxEmbla?.scrollPrev());
+    document.querySelector<HTMLButtonElement>('[data-lightbox-next]')?.addEventListener('click', () => lightboxEmbla?.scrollNext());
+
+    const root = getLightbox();
+    root?.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.embla') && !target.closest('#projecte-lightbox-close')) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !root?.classList.contains('hidden')) {
+        closeLightbox();
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
