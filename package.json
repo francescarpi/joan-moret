@@ -1,0 +1,42 @@
+{
+  "name": "joan-moret",
+  "type": "module",
+  "version": "2.2.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "lint": "eslint .",
+    "tailwind:check": "node scripts/tailwind-check.mjs",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,ts,astro}": [
+      "eslint --fix",
+      "astro check"
+    ],
+    "*.ts": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "@fontsource-variable/manrope": "5.3.0",
+    "@fontsource-variable/noto-serif": "5.3.0",
+    "@iconify-json/material-symbols": "1.2.92",
+    "@tailwindcss/cli": "4.3.3",
+    "@tailwindcss/vite": "4.3.3",
+    "@typescript-eslint/parser": "8.70.0",
+    "astro": "7.3.3",
+    "astro-icon": "1.2.0",
+    "eslint": "10.10.0",
+    "eslint-plugin-astro": "3.2.1",
+    "husky": "9.1.7",
+    "lint-staged": "17.5.1",
+    "prettier": "3.9.8",
+    "prettier-plugin-astro": "1.0.1",
+    "sharp": "0.35.4",
+    "tailwindcss": "4.3.3",
+    "typescript": "6.0.3",
+    "vite": "8.3.0"
+  }
+}

@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/images/portrait.jpg';
+---
+
+<div class="flex flex-col gap-2 w-full items-center">
+  <Image
+    src={portrait}
+    alt="Joan Moret i Camps"
+    width={530}
+    height={530}
+    class="object-cover"
+  />
+  <p class="text-justify">
+    Joan Moret i Camps
+    (Lloret de Mar, 1980)
+    és dissenyador gràfic i gestor cultural amb una sòlida trajectòria en la promoció del cinema independent i la dinamització associati-va. Referent del moviment cineclubista a Lloret de Mar i participant actiu en projectes de difusió cinematogràfica a escala catalana.
+  </p>
+</div>
