@@ -30,7 +30,7 @@ import { proyectos } from '../data/proyectos/index.ts';
             />
             <button
               type="button"
-              class="embla__zoom absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
+              class="embla__zoom absolute top-4 left-1/2 -translate-x-1/2 flex items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
               aria-label={`Veure totes les imatges de ${p.title}`}
               data-zoom-trigger
             >
@@ -42,14 +42,14 @@ import { proyectos } from '../data/proyectos/index.ts';
     </div>
     <button
       type="button"
-      class="embla__btn embla__btn--prev flex absolute left-2 top-1/2 -translate-y-1/2 items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
+      class="embla__btn embla__btn--prev flex absolute left-2 top-4 items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
       aria-label="Projecte anterior"
     >
       <span aria-hidden="true">←</span>
     </button>
     <button
       type="button"
-      class="embla__btn embla__btn--next flex absolute right-2 top-1/2 -translate-y-1/2 items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
+      class="embla__btn embla__btn--next flex absolute right-2 top-4 items-center justify-center w-12 h-12 rounded-full bg-surface/80 backdrop-blur text-on-surface hover:bg-surface-container-high transition-colors"
       aria-label="Projecte següent"
     >
       <span aria-hidden="true">→</span>
@@ -84,6 +84,7 @@ import { proyectos } from '../data/proyectos/index.ts';
       loop: true,
       align: 'start',
     };
+
     let embla: EmblaCarouselType | null = EmblaCarousel(root, {
       ...baseOptions,
       watchDrag: !mq.matches,
