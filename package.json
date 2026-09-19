@@ -1,7 +1,7 @@
 {
   "name": "joan-moret",
   "type": "module",
-  "version": "2.2.1",
+  "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -40,6 +40,6 @@
     "vite": "8.3.0"
   },
   "dependencies": {
-    "embla-carousel": "^8.6.0"
+    "embla-carousel": "8.6.0"
   }
 }
