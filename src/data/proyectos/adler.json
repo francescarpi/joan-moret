@@ -1,6 +1,8 @@
 {
   "title": "Cineclub Adler",
+  "cover": "/images/proyectos/adler/00.png",
   "images": [
-    "/images/proyectos/adler/01.png"
+    "/images/proyectos/adler/01.png",
+    "/images/proyectos/adler/02.png"
   ]
 }

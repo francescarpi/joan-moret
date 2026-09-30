@@ -1,7 +1,7 @@
 {
   "name": "joan-moret",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -16,7 +16,7 @@
       "eslint --fix",
       "astro check"
     ],
-    "*.ts": "tsc --noEmit"
+    "*.ts": "node scripts/tsc-check.mjs"
   },
   "devDependencies": {
     "@astrojs/check": "0.9.10",

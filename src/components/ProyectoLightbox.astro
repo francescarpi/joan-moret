@@ -129,8 +129,15 @@ import { proyectos } from '../data/proyectos/index.ts';
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !root?.classList.contains('hidden')) {
+      if (root?.classList.contains('hidden')) return;
+      if (e.key === 'Escape') {
         closeLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        lightboxEmbla?.scrollPrev();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        lightboxEmbla?.scrollNext();
       }
     });
   }

@@ -1,6 +1,8 @@
 {
   "title": "Plat a Taula",
+  "cover": "/images/proyectos/plat/00.png",
   "images": [
-    "/images/proyectos/plat/01.png"
+    "/images/proyectos/plat/01.png",
+    "/images/proyectos/plat/02.png"
   ]
 }

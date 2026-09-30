@@ -1,0 +1,53 @@
+---
+import { proyectos } from '../data/proyectos/index.ts';
+---
+
+{proyectos.length === 0 ? (
+  <p class="text-center text-on-surface-variant py-8">No hi ha projectes per mostrar.</p>
+) : (
+  <section
+    class="grid grid-cols-3 gap-3"
+    aria-label="Projectes"
+    data-grid
+  >
+    {proyectos.map((p, i) => (
+      <button
+        type="button"
+        class="aspect-square overflow-hidden rounded-default cursor-pointer transition hover:brightness-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        aria-label={`Veure la galeria de ${p.title}`}
+        data-zoom-trigger
+        data-proyecto-title={p.title}
+      >
+        <img
+          src={p.cover}
+          alt={p.title}
+          class="w-full h-full object-cover"
+          loading={i < 6 ? 'eager' : 'lazy'}
+        />
+      </button>
+    ))}
+  </section>
+)}
+
+<script>
+  function shuffleGridItems(grid: HTMLElement): void {
+    const items = Array.from(grid.children) as HTMLElement[];
+    for (let i = items.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [items[i], items[j]] = [items[j], items[i]];
+    }
+    items.forEach((item) => grid.appendChild(item));
+  }
+
+  function init(): void {
+    const grid = document.querySelector<HTMLElement>('[data-grid]');
+    if (!grid) return;
+    shuffleGridItems(grid);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
